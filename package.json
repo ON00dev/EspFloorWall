@@ -1,0 +1,15 @@
+{
+  "name": "espfloorwall",
+  "version": "1.0.0",
+  "description": "Catalogo EspaçoFloor e EspaçoWall.",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ON00dev",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^latest"
+  }
+}

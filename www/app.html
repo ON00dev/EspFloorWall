@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EspFloorWall</title>
+    <link rel="stylesheet" href="app.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <h1>EspFloorWall</h1>
+                </div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-tab="produtos">
+                        <i class="fas fa-box"></i>
+                        Produtos
+                    </button>
+                    <button class="nav-tab" data-tab="linhas">
+                        <i class="fas fa-layer-group"></i>
+                        Linhas de Produtos
+                    </button>
+                    <button class="nav-tab" data-tab="calculadora">
+                        <i class="fas fa-calculator"></i>
+                        Calculadora
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Produtos Tab -->
+            <div class="tab-content active" id="produtos-tab">
+                <div class="content-header">
+                    <h2>Gerenciar Produtos</h2>
+                    <button class="btn btn-primary" id="add-product-btn">
+                        <i class="fas fa-plus"></i>
+                        Adicionar Produto
+                    </button>
+                </div>
+                
+                <div class="filters">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-products" placeholder="Buscar produtos...">
+                    </div>
+                    <select id="filter-linha">
+                        <option value="">Todas as linhas</option>
+                    </select>
+                </div>
+
+                <div class="products-grid" id="products-grid">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Linhas Tab -->
+            <div class="tab-content" id="linhas-tab">
+                <div class="content-header">
+                    <h2>Linhas de Produtos</h2>
+                    <button class="btn btn-primary" id="add-linha-btn">
+                        <i class="fas fa-plus"></i>
+                        Nova Linha
+                    </button>
+                </div>
+                
+                <div class="linhas-grid" id="linhas-grid">
+                    <!-- Product lines will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Calculadora Tab -->
+            <div class="tab-content" id="calculadora-tab">
+                <div class="content-header">
+                    <h2>Calculadora de Orçamento</h2>
+                </div>
+                
+                <div class="calculator-container">
+                    <div class="calculator-form">
+                        <div class="form-group">
+                            <label>Produto:</label>
+                            <select id="calc-product">
+                                <option value="">Selecione um produto</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantidade:</label>
+                            <input type="number" id="calc-quantity" min="0" step="0.01">
+                            <span id="calc-unit"></span>
+                        </div>
+                        <button class="btn btn-primary" id="add-to-calc">
+                            <i class="fas fa-plus"></i>
+                            Adicionar
+                        </button>
+                    </div>
+                    
+                    <div class="calculation-results">
+                        <h3>Itens do Orçamento</h3>
+                        <div class="calc-items" id="calc-items">
+                            <!-- Calculation items will appear here -->
+                        </div>
+                        <div class="calc-total">
+                            <strong>Total: R$ <span id="calc-total-value">0,00</span></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Product Form -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Adicionar Produto</h3>
+                <button class="modal-close" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="modal-body" id="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-name">Nome do Produto *</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-unit">Unidade de Medida *</label>
+                        <select id="product-unit" required>
+                            <option value="">Selecione</option>
+                            <option value="m²">m² (Metro Quadrado)</option>
+                            <option value="m">m (Metro Linear)</option>
+                            <option value="pç">pç (Peça)</option>
+                            <option value="cx">cx (Caixa)</option>
+                            <option value="pct">pct (Pacote)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-linha">Linha de Produto</label>
+                    <select id="product-linha">
+                        <option value="">Selecione uma linha</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-info">Informações Adicionais</label>
+                    <textarea id="product-info" rows="3"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-cost">Preço de Custo (R$) *</label>
+                        <input type="number" id="product-cost" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-ipi">Valor IPI (R$)</label>
+                        <input type="number" id="product-ipi" step="0.01" min="0" value="0">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-profit">Percentual de Lucro (%)</label>
+                        <input type="number" id="product-profit" step="0.01" min="0" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label>Valor de Venda (R$)</label>
+                        <input type="number" id="product-sale-price" step="0.01" min="0">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-image">Imagem do Produto</label>
+                    <div class="image-upload">
+                        <input type="file" id="product-image" accept="image/*">
+                        <div class="image-preview" id="image-preview">
+                            <i class="fas fa-image"></i>
+                            <span>Clique para selecionar uma imagem</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-product">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Produto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Linha Form -->
+    <div class="modal" id="linha-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nova Linha de Produto</h3>
+                <button class="modal-close" id="close-linha-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="modal-body" id="linha-form">
+                <div class="form-group">
+                    <label for="linha-name">Nome da Linha *</label>
+                    <input type="text" id="linha-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="linha-description">Descrição</label>
+                    <textarea id="linha-description" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-linha">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Linha</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
