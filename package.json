@@ -1,15 +1,40 @@
 {
   "name": "espfloorwall",
   "version": "1.0.0",
-  "description": "Catalogo EspaçoFloor e EspaçoWall.",
+  "description": "Catálogo EspaçoFloor e EspaçoWall.",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
+    "build": "electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "ON00dev",
   "license": "ISC",
-  "dependencies": {
-    "electron": "^latest"
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.on00dev.espfloorwall",
+    "productName": "EspFloorWall",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "www/**/*",
+      "main.js",
+      "preload.js",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "mac": {
+      "target": "dmg"
+    }
   }
 }
