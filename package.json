@@ -22,9 +22,9 @@
       "output": "dist"
     },
     "files": [
-      "www/**/*",
-      "main.js",
+      "index.js",
       "preload.js",
+      "www/**/*",
       "package.json"
     ],
     "win": {
